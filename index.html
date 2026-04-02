@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Decentralized Election Platform</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <h1>Decentralized Election System</h1>
+        <p class="subtitle">Secure and TamperProof election management</p>
+        <div class="wallet-section">
+          <div>
+            <div class="wallet-info">
+              <span id="walletStatus">Not Connected</span>
+              <div class="wallet-address" id="walletAddress"></div>
+            </div>
+            <div class="role-indicator" id="roleIndicator" style="display: none"></div>
+          </div>
+          <div style="display: flex; gap: 10px; align-items: center;">
+            <button id="adminDebugBtn" class="secondary btn-sm" onclick="toggleAdminDebug()">Debug: Admin View</button>
+            <button id="headerNewElection" class="btn-sm" onclick="createNewElection()">+ New Election</button>
+            <button id="connectWallet" onclick="connectWallet()">Connect Wallet</button>
+          </div>
+        </div>
+      </header>
+
+      <!-- Commissioner Interface -->
+      <div id="commissionerMode" style="display: none">
+        <div class="section">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px">
+            <h2>My Elections</h2>
+            <button onclick="createNewElection()">+ New Election</button>
+          </div>
+          <div id="electionsList"></div>
+        </div>
+
+        <div id="manageSection" style="display: none">
+          <div class="tabs">
+            <button class="tab active" onclick="showTab('setup')">Setup</button>
+            <button class="tab" onclick="showTab('candidates')">Candidates</button>
+            <button class="tab" onclick="showTab('voters')">Voters</button>
+            <button class="tab" onclick="showTab('results')">Results</button>
+          </div>
+
+          <div id="setupTab" class="section">
+            <h2>Election Setup</h2>
+            <div id="setupMessage"></div>
+
+            <div class="form-group">
+              <label>Title</label>
+              <input type="text" id="setupTitle" placeholder="Election name" />
+            </div>
+
+            <div class="form-group">
+              <label>Description</label>
+              <textarea id="setupDescription" placeholder="Describe the election..."></textarea>
+            </div>
+
+            <div class="form-group">
+              <label>Registration Period</label>
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px">
+                <input type="datetime-local" id="setupRegStart" />
+                <input type="datetime-local" id="setupRegEnd" />
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Voting Period</label>
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px">
+                <input type="datetime-local" id="setupVoteStart" />
+                <input type="datetime-local" id="setupVoteEnd" />
+              </div>
+            </div>
+
+            <div class="btn-group">
+              <button onclick="initializeElection()">Initialize</button>
+              <button class="secondary" onclick="updateTimings()">Update Timings</button>
+            </div>
+          </div>
+
+          <div id="candidatesTab" class="section" style="display: none">
+            <h2>Candidates</h2>
+            <div id="candidatesMessage"></div>
+
+            <div class="form-group">
+              <label>Name</label>
+              <input type="text" id="candidateName" placeholder="Candidate name" />
+            </div>
+            <div class="form-group">
+              <label>Description</label>
+              <textarea id="candidateDescription" placeholder="Background, qualifications..."></textarea>
+            </div>
+            <button onclick="addCandidate()">Add Candidate</button>
+
+            <h3 style="margin-top: 24px">Current Candidates</h3>
+            <div id="candidatesList" class="grid"></div>
+          </div>
+
+          <div id="votersTab" class="section" style="display: none">
+            <h2>Voter Management</h2>
+            <div id="votersMessage"></div>
+            <p class="subtitle">Approve registered voters to participate in the election.</p>
+            
+            <div id="votersList" class="grid" style="margin-top: 20px;"></div>
+          </div>
+
+          <div id="resultsTab" class="section" style="display: none">
+            <h2>Results</h2>
+            <button onclick="finalizeElection()">Finalize Election</button>
+            <div id="resultsContent"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Voter Interface -->
+      <div id="voterMode" style="display: none">
+        <div class="section">
+          <h2>Available Elections</h2>
+          <div id="allElections"></div>
+        </div>
+
+        <div id="voterElectionSection" style="display: none">
+          <div class="section">
+            <h2 id="voterElectionTitle"></h2>
+            <div id="voterElectionInfo" style="margin-bottom: 20px"></div>
+            <div id="voterMessage"></div>
+
+            <button id="voterRegisterBtn" onclick="voterRegister()" style="display: none">
+              Register to Vote
+            </button>
+
+            <div id="voterCandidatesSection" style="display: none; margin-top: 24px">
+              <h3>Candidates</h3>
+              <div id="voterCandidatesList" class="grid"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/6.7.0/ethers.umd.min.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>
