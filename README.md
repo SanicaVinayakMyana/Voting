@@ -1,4 +1,4 @@
-# ✨ Transparency in Democracy: The Sanica Election Platform
+# ✨ Transparency in Democracy: The Election Platform
 
 Welcome to a new way to vote. This project is a decentralized, blockchain-powered election system designed to be impossible to rig and easy for anyone to use. 
 
